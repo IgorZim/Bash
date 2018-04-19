@@ -1,0 +1,53 @@
+Ubuntu DHCP:
+
+$sudo apt-get install isc-dhcp-server;
+
+Файл настроек DHCP:
+
+$sudo nano /etc/default/isc-dhcp-server;
+
+ INTERFACES="eth0"
+
+$sudo nano /etc/dhcp/dhcp.conf;
+
+  authoritative
+  Закоментировать 
+  #default-lease-time 600;
+  #max-facility local7;
+
+subnet 192.168.0.0 netmask 255.255.255.0 {
+        range 192.168.0.100 192.168.0.120;
+        option routers 192.168.0.1;
+        option broadcast-address 192.168.0.255;
+        option domain-name-servers 192.168.0.1;
+        option domain-name "dom";
+        option subnet-mask 255.255.255.0;
+        default-lease-time 604800;
+        max-lease-time 604800;
+} 
+
+sebnet — Параметр отвечает за подсеть (в нашем случае 192.168.0.0 с маской 255.255.255.0)
+range — Диапазон выдаваемых адресов от 100 до 120
+routers — указываем IP адрес шлюза 192.168.0.1 (в нашем случае указываем наш сервер — IP адрес 
+сетевой карты enp0s8)
+broadcast-address — Широковещательный адрес 192.168.0.255
+domain-name-servers — указываем имена или IP адреса серверов DNS (в нашем случае DNS сервером 
+выступает наш же сервер с адресом 192.168.0.1).
+domain-name — Доменное имя «dom». Параметр отвечает в каком домене производить поиск прежде 
+чем обратиться к другому серверу DNS.
+subnet-mask — Маска сети 255.255.255.0″
+lease-time — Срок аренды адреса 604800 в секундах
+
+
+В настройках можно указать за какой машиной зафиксирован определенный IP адрес, 
+за это отвечает параметр host:
+
+host home-asus {
+               hardware ethernet AC:22:0B:4D:B2:1D;
+               fixed-address 192.168.0.100;
+}
+
+home-asus — имя машины в сети (можно написать все что угодно)
+hardware — MAC адрес сетевой карты за которым закрепляем IP адрес
+fixed-address — Здесь указываем какой IP адрес назначить данной машине
+
