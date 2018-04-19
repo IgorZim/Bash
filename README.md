@@ -1,3 +1,3 @@
-# Bash
-# For bash scripts
+# Linux
+# For Linux
 
